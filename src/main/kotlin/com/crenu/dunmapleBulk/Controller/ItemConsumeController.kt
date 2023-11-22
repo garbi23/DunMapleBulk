@@ -17,7 +17,6 @@ class ItemConsumeController(
         return getItemConsumeRepo.sendItemConsumeList(randomDataList)
     }
 
-    // 랜덤 데이터 생성 메소드
     private fun generateRandomDataList(): List<GetItemConsumeDTO> {
         val random = Random()
         return List(100) {

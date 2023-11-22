@@ -10,7 +10,6 @@ class GetItemConsumeRepo(
     private val jdbcTemplate: JdbcTemplate
 ) {
     fun sendItemConsumeList(dtoItems: List<GetItemConsumeDTO>): List<GetItemConsumeDTO> {
-        // 실제 데이터베이스 저장 대신, 데이터 리스트를 반환
         return dtoItems
     }
     fun insertItemConsumeList(dtoItems: List<GetItemConsumeDTO>) {
