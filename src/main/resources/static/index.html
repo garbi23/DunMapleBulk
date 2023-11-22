@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item Consume Data</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to fetch data and append to the page
+            function fetchData() {
+                fetch('/item-consume/get-data')
+                    .then(response => response.json())
+                    .then(data => {
+                        const pre = document.createElement('pre');
+                        pre.textContent = JSON.stringify(data, null, 2);
+                        document.body.appendChild(pre);
+
+                        // Add a horizontal line to separate data
+                        const hr = document.createElement('hr');
+                        document.body.appendChild(hr);
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            // Make 10 consecutive requests
+            for (let i = 0; i < 10; i++) {
+                fetchData();
+            }
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>
