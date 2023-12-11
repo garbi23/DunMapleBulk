@@ -28,4 +28,29 @@ class GetItemConsumeRepo(
             override fun getBatchSize(): Int = dtoItems.size
         })
     }
+    fun deleteItemConsumeByUserIds(userIds: List<String>) {
+        val sql = "DELETE FROM item_consume WHERE userid = ?"
+
+        jdbcTemplate.batchUpdate(sql, object : BatchPreparedStatementSetter {
+            override fun setValues(ps: java.sql.PreparedStatement, i: Int) {
+                ps.setString(1, userIds[i])
+            }
+
+            override fun getBatchSize(): Int = userIds.size
+        })
+    }
+    fun updateItemConsumeList(dtoItems: List<GetItemConsumeDTO>) {
+        val sql = "UPDATE item_consume SET usecount = ?, allcount = ? WHERE userid = ? AND itemname = ?"
+
+        jdbcTemplate.batchUpdate(sql, object : BatchPreparedStatementSetter {
+            override fun setValues(ps: java.sql.PreparedStatement, i: Int) {
+                val dto = dtoItems[i]
+                ps.setInt(1, dto.useCount)
+                ps.setInt(2, dto.allCount)
+                ps.setString(3, dto.userid)
+                ps.setString(4, dto.itemName)
+            }
+            override fun getBatchSize(): Int = dtoItems.size
+        })
+    }
 }
