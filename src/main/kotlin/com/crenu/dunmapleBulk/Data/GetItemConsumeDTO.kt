@@ -11,3 +11,4 @@ data class GetItemConsumeDTO(
     val useCount: Int,
     val allCount: Int
 )
+
