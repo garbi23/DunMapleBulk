@@ -1,34 +1,46 @@
 package com.crenu.dunmapleBulk.Controller
 
 import com.crenu.dunmapleBulk.Data.GetItemConsumeDTO
-import com.crenu.dunmapleBulk.Repo.GetItemConsumeRepo
+import com.crenu.dunmapleBulk.Service.ItemConsumeService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
-import java.util.*
+
 
 @RestController
 @RequestMapping("/item-consume")
-class ItemConsumeController(
-    private val getItemConsumeRepo: GetItemConsumeRepo
-) {
+class ItemConsumeController(private val itemConsumeService: ItemConsumeService) {
+
     @GetMapping("/get-data")
-    fun getData(): List<GetItemConsumeDTO> {
-        val randomDataList = generateRandomDataList()
-        return getItemConsumeRepo.sendItemConsumeList(randomDataList)
+    fun getData(): ResponseEntity<List<GetItemConsumeDTO>> {
+        return ResponseEntity.ok(itemConsumeService.getData())
     }
 
-    private fun generateRandomDataList(): List<GetItemConsumeDTO> {
-        val random = Random()
-        return List(100) {
-            GetItemConsumeDTO(
-                num = null,
-                timeStamp = LocalDateTime.now().minusDays(random.nextLong(1, 30)),
-                userid = UUID.randomUUID().toString(),
-                nickName = "User-${random.nextInt(1000)}",
-                itemName = "Item-${random.nextInt(100)}",
-                useCount = random.nextInt(1, 100),
-                allCount = random.nextInt(1, 100)
-            )
-        }
+    @PostMapping("/create")
+    fun createItemConsume(@RequestBody newItemConsumeData: List<GetItemConsumeDTO>): ResponseEntity<String> {
+        itemConsumeService.createItemConsume(newItemConsumeData)
+        return ResponseEntity.ok("Created new item consume records")
+    }
+
+
+    @DeleteMapping("/delete")
+    fun deleteItemConsume(@RequestBody userIds: List<String>): ResponseEntity<String> {
+        itemConsumeService.deleteItemConsume(userIds)
+        return ResponseEntity.ok("Deleted items for user IDs: ${userIds.joinToString()}")
+    }
+
+    @PutMapping("/update")
+    fun updateItemConsume(@RequestBody dtoItems: List<GetItemConsumeDTO>): ResponseEntity<String> {
+        itemConsumeService.updateItemConsume(dtoItems)
+        return ResponseEntity.ok("Updated items")
+    }
+
+    @GetMapping("/by-userid/{userid}")
+    fun getByUserid(@PathVariable userid: String): ResponseEntity<List<GetItemConsumeDTO>> {
+        return ResponseEntity.ok(itemConsumeService.getByUserid(userid))
+    }
+
+    @GetMapping("/all")
+    fun getAllItems(): ResponseEntity<List<GetItemConsumeDTO>> {
+        return ResponseEntity.ok(itemConsumeService.getAllItems())
     }
 }
