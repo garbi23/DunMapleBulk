@@ -1,10 +1,8 @@
 package com.crenu.dunmapleBulk.Data
 
-import java.time.LocalDateTime
 
 data class GetItemConsumeDTO(
-    val num: Long?,
-    val timeStamp: LocalDateTime,
+    val timestamp: String,
     val userid: String,
     val nickName: String?,
     val itemName: String?,
